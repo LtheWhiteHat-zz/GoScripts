@@ -46,7 +46,6 @@ func (s *Client) HostSearch(q string) (*HostSearch, error) {
 		return nil, err
 	}
 	defer res.Body.Close()
-
 	var ret HostSearch
 	if err := json.NewDecoder(res.Body).Decode(&ret); err != nil {
 		return nil, err

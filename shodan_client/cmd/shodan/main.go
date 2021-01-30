@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-//USAGE: SHODAN_API_KEY={your key here} go run main.go
+//USAGE: SHODAN_API_KEY={your key here} go run main.go target searchmethod
 func main() {
 	if len(os.Args) != 2 {
 		log.Fatalln("Usage: shodan searchterm")
@@ -27,6 +27,6 @@ func main() {
 		log.Panicln(err)
 	}
 	for _, host := range hostSearch.Matches {
-		fmt.Printf("%18s%8d -> %s %s\n", host.IPString, host.Port, host.Location.CountryName, host.Location.City)
+		fmt.Printf("%18s%8d -> %s %s %s %s\n", host.IPString, host.Port, host.Location.CountryName, host.Location.City, host.Org, host.OS)
 	}
 }
