@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"net"
 	"sort"
+	"log"
+	"strconv"
+	"os"
 )
 
-func worker(ports, results chan int) {
+func worker(ports, results chan int, target string) {
 	for p := range ports {
 		address := fmt.Sprintf("scanme.nmap.org:%d", p)
 		conn, err := net.Dial("tcp", address)
@@ -21,21 +24,31 @@ func worker(ports, results chan int) {
 }
 
 func main() {
-	ports := make(chan int, 100)
+	inputLastPort := os.Args[2]
+	lastPort, err := strconv.Atoi(inputLastPort)
+	if err != nil{
+		log.Fatalln(err)
+	}
+	inputChannels := os.Args[3]
+	channels, err := strconv.Atoi(inputChannels)
+	if err != nil{
+		log.Fatalln(err)
+	}
+	ports := make(chan int, channels)
 	var openports []int
 	results := make(chan int)
 
 	for i := 0; i < cap(ports); i++ {
-		go worker(ports, results)
+		go worker(ports, results, os.Args[1])
 	}
 
 	go func() {
-		for i := 1; 1 < 1024; i++ {
+		for i := 1; 1 < lastPort; i++ {
 			ports <- i
 		}
 	}()
 
-	for i := 0; i < 1024; i++ {
+	for i := 0; i < lastPort; i++ {
 		port := <-results
 		if port != 0 {
 			openports = append(openports, port)
