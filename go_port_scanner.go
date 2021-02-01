@@ -11,7 +11,7 @@ import (
 
 func worker(ports, results chan int, target string) {
 	for p := range ports {
-		address := fmt.Sprintf("scanme.nmap.org:%d", p)
+		address := fmt.Sprintf("%s:%d",target, p)
 		conn, err := net.Dial("tcp", address)
 		if err != nil {
 			results <- 0
